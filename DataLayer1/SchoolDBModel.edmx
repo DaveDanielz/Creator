@@ -1,0 +1,290 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="SchoolModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="CreatorFollowers">
+          <Key>
+            <PropertyRef Name="followingUserId" />
+          </Key>
+          <Property Name="followingUserId" Type="int" Nullable="false" />
+          <Property Name="followedeUserID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CreatorMedia">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="postID" Type="int" />
+          <Property Name="mediaFile" Type="image" />
+        </EntityType>
+        <EntityType Name="CreatorPosts">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="createDate" Type="date" />
+          <Property Name="creatId" Type="int" />
+        </EntityType>
+        <EntityType Name="CreatorUsers">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="fName" Type="varchar" MaxLength="50" />
+          <Property Name="lName" Type="varchar" MaxLength="50" />
+          <Property Name="pname" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <Association Name="FK_CreatorFollowers_CreatorFollowers">
+          <End Role="CreatorFollowers" Type="Self.CreatorFollowers" Multiplicity="1" />
+          <End Role="CreatorFollowers1" Type="Self.CreatorFollowers" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="CreatorFollowers">
+              <PropertyRef Name="followingUserId" />
+            </Principal>
+            <Dependent Role="CreatorFollowers1">
+              <PropertyRef Name="followingUserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CreatorFollowers_CreatorUsers">
+          <End Role="CreatorUsers" Type="Self.CreatorUsers" Multiplicity="1" />
+          <End Role="CreatorFollowers" Type="Self.CreatorFollowers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CreatorUsers">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="CreatorFollowers">
+              <PropertyRef Name="followedeUserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CreatorMedia_CreatorUsers">
+          <End Role="CreatorUsers" Type="Self.CreatorUsers" Multiplicity="0..1" />
+          <End Role="CreatorMedia" Type="Self.CreatorMedia" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CreatorUsers">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="CreatorMedia">
+              <PropertyRef Name="postID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CreatorPosts_CreatorUsers">
+          <End Role="CreatorUsers" Type="Self.CreatorUsers" Multiplicity="0..1" />
+          <End Role="CreatorPosts" Type="Self.CreatorPosts" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CreatorUsers">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="CreatorPosts">
+              <PropertyRef Name="creatId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="SchoolModelStoreContainer">
+          <EntitySet Name="CreatorFollowers" EntityType="Self.CreatorFollowers" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CreatorMedia" EntityType="Self.CreatorMedia" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CreatorPosts" EntityType="Self.CreatorPosts" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CreatorUsers" EntityType="Self.CreatorUsers" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_CreatorFollowers_CreatorFollowers" Association="Self.FK_CreatorFollowers_CreatorFollowers">
+            <End Role="CreatorFollowers" EntitySet="CreatorFollowers" />
+            <End Role="CreatorFollowers1" EntitySet="CreatorFollowers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CreatorFollowers_CreatorUsers" Association="Self.FK_CreatorFollowers_CreatorUsers">
+            <End Role="CreatorUsers" EntitySet="CreatorUsers" />
+            <End Role="CreatorFollowers" EntitySet="CreatorFollowers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CreatorMedia_CreatorUsers" Association="Self.FK_CreatorMedia_CreatorUsers">
+            <End Role="CreatorUsers" EntitySet="CreatorUsers" />
+            <End Role="CreatorMedia" EntitySet="CreatorMedia" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CreatorPosts_CreatorUsers" Association="Self.FK_CreatorPosts_CreatorUsers">
+            <End Role="CreatorUsers" EntitySet="CreatorUsers" />
+            <End Role="CreatorPosts" EntitySet="CreatorPosts" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="SchoolModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="CreatorFollower">
+          <Key>
+            <PropertyRef Name="followingUserId" />
+          </Key>
+          <Property Name="followingUserId" Type="Int32" Nullable="false" />
+          <Property Name="followedeUserID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="CreatorFollowers1" Relationship="Self.FK_CreatorFollowers_CreatorFollowers" FromRole="CreatorFollowers" ToRole="CreatorFollowers1" />
+          <NavigationProperty Name="CreatorFollower1" Relationship="Self.FK_CreatorFollowers_CreatorFollowers" FromRole="CreatorFollowers1" ToRole="CreatorFollowers" />
+          <NavigationProperty Name="CreatorUser" Relationship="Self.FK_CreatorFollowers_CreatorUsers" FromRole="CreatorFollowers" ToRole="CreatorUsers" />
+        </EntityType>
+        <EntityType Name="CreatorMedia">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="postID" Type="Int32" />
+          <Property Name="mediaFile" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <NavigationProperty Name="CreatorUser" Relationship="Self.FK_CreatorMedia_CreatorUsers" FromRole="CreatorMedia" ToRole="CreatorUsers" />
+        </EntityType>
+        <EntityType Name="CreatorPost">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="createDate" Type="DateTime" Precision="0" />
+          <Property Name="creatId" Type="Int32" />
+          <NavigationProperty Name="CreatorUser" Relationship="Self.FK_CreatorPosts_CreatorUsers" FromRole="CreatorPosts" ToRole="CreatorUsers" />
+        </EntityType>
+        <EntityType Name="CreatorUser">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="fName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="lName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="pname" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="CreatorFollowers" Relationship="Self.FK_CreatorFollowers_CreatorUsers" FromRole="CreatorUsers" ToRole="CreatorFollowers" />
+          <NavigationProperty Name="CreatorMedias" Relationship="Self.FK_CreatorMedia_CreatorUsers" FromRole="CreatorUsers" ToRole="CreatorMedia" />
+          <NavigationProperty Name="CreatorPosts" Relationship="Self.FK_CreatorPosts_CreatorUsers" FromRole="CreatorUsers" ToRole="CreatorPosts" />
+        </EntityType>
+        <Association Name="FK_CreatorFollowers_CreatorFollowers">
+          <End Role="CreatorFollowers" Type="Self.CreatorFollower" Multiplicity="1" />
+          <End Role="CreatorFollowers1" Type="Self.CreatorFollower" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="CreatorFollowers">
+              <PropertyRef Name="followingUserId" />
+            </Principal>
+            <Dependent Role="CreatorFollowers1">
+              <PropertyRef Name="followingUserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CreatorFollowers_CreatorUsers">
+          <End Role="CreatorUsers" Type="Self.CreatorUser" Multiplicity="1" />
+          <End Role="CreatorFollowers" Type="Self.CreatorFollower" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CreatorUsers">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="CreatorFollowers">
+              <PropertyRef Name="followedeUserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CreatorMedia_CreatorUsers">
+          <End Role="CreatorUsers" Type="Self.CreatorUser" Multiplicity="0..1" />
+          <End Role="CreatorMedia" Type="Self.CreatorMedia" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CreatorUsers">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="CreatorMedia">
+              <PropertyRef Name="postID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CreatorPosts_CreatorUsers">
+          <End Role="CreatorUsers" Type="Self.CreatorUser" Multiplicity="0..1" />
+          <End Role="CreatorPosts" Type="Self.CreatorPost" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CreatorUsers">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="CreatorPosts">
+              <PropertyRef Name="creatId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="SchoolEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="CreatorFollowers" EntityType="Self.CreatorFollower" />
+          <EntitySet Name="CreatorMedias" EntityType="Self.CreatorMedia" />
+          <EntitySet Name="CreatorPosts" EntityType="Self.CreatorPost" />
+          <EntitySet Name="CreatorUsers" EntityType="Self.CreatorUser" />
+          <AssociationSet Name="FK_CreatorFollowers_CreatorFollowers" Association="Self.FK_CreatorFollowers_CreatorFollowers">
+            <End Role="CreatorFollowers" EntitySet="CreatorFollowers" />
+            <End Role="CreatorFollowers1" EntitySet="CreatorFollowers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CreatorFollowers_CreatorUsers" Association="Self.FK_CreatorFollowers_CreatorUsers">
+            <End Role="CreatorUsers" EntitySet="CreatorUsers" />
+            <End Role="CreatorFollowers" EntitySet="CreatorFollowers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CreatorMedia_CreatorUsers" Association="Self.FK_CreatorMedia_CreatorUsers">
+            <End Role="CreatorUsers" EntitySet="CreatorUsers" />
+            <End Role="CreatorMedia" EntitySet="CreatorMedias" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CreatorPosts_CreatorUsers" Association="Self.FK_CreatorPosts_CreatorUsers">
+            <End Role="CreatorUsers" EntitySet="CreatorUsers" />
+            <End Role="CreatorPosts" EntitySet="CreatorPosts" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="SchoolModelStoreContainer" CdmEntityContainer="SchoolEntities">
+          <EntitySetMapping Name="CreatorFollowers">
+            <EntityTypeMapping TypeName="SchoolModel.CreatorFollower">
+              <MappingFragment StoreEntitySet="CreatorFollowers">
+                <ScalarProperty Name="followingUserId" ColumnName="followingUserId" />
+                <ScalarProperty Name="followedeUserID" ColumnName="followedeUserID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CreatorMedias">
+            <EntityTypeMapping TypeName="SchoolModel.CreatorMedia">
+              <MappingFragment StoreEntitySet="CreatorMedia">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="postID" ColumnName="postID" />
+                <ScalarProperty Name="mediaFile" ColumnName="mediaFile" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CreatorPosts">
+            <EntityTypeMapping TypeName="SchoolModel.CreatorPost">
+              <MappingFragment StoreEntitySet="CreatorPosts">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="createDate" ColumnName="createDate" />
+                <ScalarProperty Name="creatId" ColumnName="creatId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CreatorUsers">
+            <EntityTypeMapping TypeName="SchoolModel.CreatorUser">
+              <MappingFragment StoreEntitySet="CreatorUsers">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="fName" ColumnName="fName" />
+                <ScalarProperty Name="lName" ColumnName="lName" />
+                <ScalarProperty Name="pname" ColumnName="pname" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
